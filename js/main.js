@@ -6,12 +6,13 @@
     ready = false,
     config = {
     ramp_time: 500,
-    frame_delay: 300,
-    num_frames: 10,
+    frame_delay: 1,
+    num_frames: 1,
+    prep_time: 1,
     rows: 4,
     gutter: 7,
     gutter_color: 'black',
-    width: 300,
+    width: 200,
     height: 900
   },
     footer = {
@@ -23,15 +24,14 @@
   }
 
   function setStatus (text, body_class) {
-    body_class = body_class || '';
     statustext.textContent = text;
     console.log(text);
-    document.body.classList = body_class;
+    document.body.classList = body_class || '';
   }
 
   function startCapture () {
     if (ready && !running) {
-      setStatus('GET READY', 'ready');
+      setStatus('Get ready...', 'ready');
       preview.parentElement.classList.remove('active');
       running = true;
       var target_height = ((config.height - footer.height) - ((config.rows + 1) * config.gutter)) / config.rows;
@@ -42,17 +42,19 @@
       base_canvas.height = config.height;
       var frames = [], context, gif;
       for (let i = 0; i < config.rows; ++i) {
-        sleep((6000 * i) + 3000 + (pose_time * i)).then(function () {
-          for (let count = 0; count < 3; ++count) {
-            sleep(1000 * count).then(function () {
-              setStatus(3 - count);
-            });
-          }
-        });
-        sleep((6000 * (i + 1)) + (pose_time * i)).then(function () {
+        if (config.prep_time > 3000) {
+          sleep((config.prep_time * i) + (config.prep_time - 3000) + (pose_time * i)).then(function () {
+            for (let count = 0; count < 3; ++count) {
+              sleep(1000 * count).then(function () {
+                setStatus(3 - count);
+              });
+            }
+          });
+        }
+        sleep((config.prep_time * (i + 1)) + (pose_time * i)).then(function () {
           for (let j = 0; j < config.num_frames; ++j) {
             sleep(config.frame_delay * j).then(function () {
-              setStatus('POSE', 'pose');
+              setStatus('Pose!', 'pose');
               if (!frames[j]) {
                 frames[j] = base_canvas.cloneNode();
                 context = frames[j].getContext('2d');
@@ -64,9 +66,9 @@
               else {
                 context = frames[j].getContext('2d');
               }
-              context.drawImage(video, 0, (i * target_height) + ((i + 1) * config.gutter), target_width, target_height);
+              context.drawImage(video, video.videoWidth - target_width, video.videoHeight - target_height, target_width, target_height, 0, (i * target_height) + ((i + 1) * config.gutter), target_width, target_height);
               if (j === config.num_frames - 1) {
-                setStatus('GET READY', 'ready');
+                setStatus('Get Ready...', 'ready');
               }
               if (i === config.rows - 1 && j === config.num_frames - 1) {
                 gif = new GIF({
@@ -81,13 +83,16 @@
                   if (preview.src) {
                     URL.revokeObjectURL(preview.src);
                   }
-                  preview.src = URL.createObjectURL(blob);
+                  var url = URL.createObjectURL(blob);
+                  preview.src = url;
                   preview.parentElement.classList.add('active');
-                  setStatus('CLICK ME');
+                  downloadlink.href = url;
+                  downloadlink.download = 'photobooth.gif';
+                  setStatus('Click me');
                 });
                 gif.render();
                 running = false;
-                setStatus('LOADING GIF');
+                setStatus('Loading GIF');
               }
             });
           }
@@ -98,29 +103,39 @@
 
   statustext.onclick = startCapture;
 
+  closelink.onclick = function () {
+    preview.parentElement.classList.remove('active');
+  };
+
   document.onkeypress = function (event) {
     if (event.keyCode === 13) {
       startCapture();
     }
   };
 
-  setStatus('WARMING UP');
   if (navigator && navigator.mediaDevices) {
+    var interval;
     navigator.mediaDevices.getUserMedia({video: {facingMode: 'user'}}).then(function (stream) {
       video.srcObject = stream;
       video.play();
       video.addEventListener('canplay', function () {
+        if (interval) {
+          clearInterval(interval);
+        }
         setTimeout(function () {
           ready = true;
-          setStatus('CLICK ME');
+          setStatus('Click me');
+          interval = setInterval(function () {
+          
+          }, config.frame_delay);
         }, config.ramp_time);
       }, false);
     }).catch(function () {
-      setStatus('WEBCAM ERROR 😭', 'error');
+      setStatus('Webcam issues 😭', 'error');
     });
   }
   else {
-    setStatus('OLD BROWSER 😭', 'error');
+    setStatus('Incompatible browser 😭', 'error');
   }
 
 }());
