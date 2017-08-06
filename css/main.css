@@ -16,6 +16,11 @@ body {
   transition: background-color .2s;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
+body.count form,
+body.pose form,
+body.ready form {
+  display: none;
+}
 body.pose {
   background-color: #96e4a0;
 }
@@ -54,7 +59,8 @@ canvas {
 .preview-wrapper.active {
   display: block;
 }
-.links a {
+.links a,
+#formtoggle {
   display: block;
   margin-left: 10px;
   color: white;
@@ -79,11 +85,36 @@ canvas {
   text-shadow: 2px 3px 0px #cff8ff;
   font-size: 75px;
 }
+form {
+  display: block;
+  text-align: left;
+  max-width: 50%;
+  margin: 20px auto;
+  background: #b4e1ec;
+  padding: 20px;
+}
+input {
+  margin-bottom: 15px;
+  display: block;
+}
+input[type="text"] {
+  padding: 5px;
+  font-size: 15px;
+}
+label {
+  display: block;
+  margin-bottom: 5px;
+  color: #147d90;
+  text-shadow: 1px 1px 0px #cff8ff;
+}
 @media (max-width: 800px) {
   canvas {
     width: 100%;
   }
   #statustext {
     font-size: 60px;
+  }
+  form {
+    max-width: none;
   }
 }
