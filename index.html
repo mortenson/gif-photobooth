@@ -15,6 +15,24 @@
         <a href="#" id="downloadlink">download</a>
       </div>
     </div>
+    <form onsubmit="submitConfigForm()">
+      <label for="config_width">Width</label>
+      <input id="config_width" type="text">
+      <label for="config_height">Height</label>
+      <input id="config_height" type="text">
+      <label for="config_rows">Number of poses</label>
+      <input id="config_rows" type="text">
+      <label for="config_gutter_color">Gutter color</label>
+      <input id="config_gutter_color" type="color">
+      <label for="config_gutter">Gutter height (in pixels)</label>
+      <input id="config_gutter" type="text">
+      <label for="config_num_frames">Number of GIF frames</label>
+      <input id="config_num_frames" type="text">
+      <label for="config_frame_delay">Time between frames (in milliseconds)</label>
+      <input id="config_frame_delay" type="text">
+      <label for="config_prep_time">Time between poses (in milliseconds)</label>
+      <input id="config_prep_time" type="text">
+    </form>
     <script src="js/main.js"></script>
   </body>
 </html>
