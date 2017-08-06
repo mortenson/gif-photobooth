@@ -1,0 +1,15 @@
+{
+  "name": "gif-photobooth",
+  "version": "0.0.1",
+  "description": "A web based photobooth that creates animated strips.",
+  "scripts": {
+    "build": "rm -rf js/gif.js && cp -r node_modules/gif.js/dist js/gif.js",
+    "start": "npm run build && ws"
+  },
+  "author": "Samuel Mortenson",
+  "license": "GIT",
+  "dependencies": {
+    "gif.js": "^0.2.0",
+    "local-web-server": "^2.2.3"
+  }
+}
