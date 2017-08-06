@@ -17,6 +17,15 @@
       </div>
     </div>
     <form onsubmit="submitConfigForm()">
+      <label for="config_filter">Style</label>
+      <select id="config_filter">
+        <option value="none">None</option>
+        <option value="grayscale(100%)">Black & white</option>
+        <option value="sepia(50%)">Sepia-tone</option>
+        <option value="hue-rotate(90deg)">Hue shift 1</option>
+        <option value="hue-rotate(180deg)">Hue shift 2</option>
+        <option value="hue-rotate(270deg)">Hue shift 3</option>
+      </select>
       <label for="config_width">Width</label>
       <input id="config_width" type="text">
       <label for="config_height">Height</label>

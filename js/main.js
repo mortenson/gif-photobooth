@@ -14,7 +14,8 @@
       gutter: 7,
       gutter_color: 'black',
       width: 200,
-      height: 900
+      height: 900,
+      filter: 'none'
     };
 
   for (var name in base_config) {
@@ -26,7 +27,7 @@
   function config (name) {
     if (window['config_' + name] && window['config_' + name].value.length) {
       var value = window['config_' + name].value;
-      if (name === 'gutter_color') {
+      if (name === 'gutter_color' || name === 'filter') {
         return value;
       }
       else if (parseInt(value)) {
@@ -156,6 +157,7 @@
             var x = (target_width - video.videoWidth * ratio) / 2;
             var y = (target_height - video.videoHeight * ratio) / 2;
             context.imageSmoothingEnabled = false;
+            context.filter = config('filter');
             context.drawImage(video, 0,0, video.videoWidth, video.videoHeight, x, y, video.videoWidth * ratio, video.videoHeight * ratio);
           }, 10);
         }, config('ramp_time'));
