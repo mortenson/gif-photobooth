@@ -18,7 +18,8 @@ body {
 }
 body.count form,
 body.pose form,
-body.ready form {
+body.ready form,
+body.error form {
   display: none;
 }
 body.pose {
@@ -92,11 +93,13 @@ form {
   background: #b4e1ec;
   padding: 20px;
 }
-input {
+input,
+select {
   margin-bottom: 15px;
   display: block;
 }
-input[type="text"] {
+input[type="text"],
+select {
   padding: 5px;
   font-size: 15px;
 }
