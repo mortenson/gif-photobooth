@@ -152,14 +152,11 @@
             var context = videomirror.getContext('2d');
             context.translate(videomirror.width, 0);
             context.scale(-1, 1);
-            // Scale and crop the video, if possible.
-            if (video.videoWidth > target_width && video.videoHeight > target_height) {
-              context.drawImage(video, (video.videoWidth - target_width) / 2, (video.videoHeight - target_height) / 2, target_width, target_height, 0, 0, target_width, target_height);
-            }
-            // RIP aspect ratio.
-            else {
-              context.drawImage(video, 0, 0, target_width, target_height);
-            }
+            var ratio  = Math.max(target_width  / video.videoWidth, target_height / video.videoHeight);
+            var x = (target_width - video.videoWidth * ratio) / 2;
+            var y = (target_height - video.videoHeight * ratio) / 2;
+            context.imageSmoothingEnabled = false;
+            context.drawImage(video, 0,0, video.videoWidth, video.videoHeight, x, y, video.videoWidth * ratio, video.videoHeight * ratio);
           }, 10);
         }, config('ramp_time'));
       }, false);
