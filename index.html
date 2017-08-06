@@ -5,11 +5,15 @@
     <script src="js/gif.js/gif.js"></script>
   </head>
   <body>
-    <a href="#" id="statustext">CLICK ME</a>
+    <a href="#" id="statustext">Warming up</a>
     <video autoplay="autoplay" id="video"></video>
+    <canvas id="videomirror"></canvas>
     <div class="preview-wrapper">
       <img id="preview" />
-      <a href="#" onclick="this.parentElement.classList.remove('active')">x</a>
+      <div class="links">
+        <a href="#" id="closelink">close</a>
+        <a href="#" id="downloadlink">download</a>
+      </div>
     </div>
     <script src="js/main.js"></script>
   </body>
