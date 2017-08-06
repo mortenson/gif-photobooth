@@ -1,13 +1,3 @@
-body {
-  position: relative;
-  text-align: center;
-  background-color: #a1d0dc;
-  margin: 0;
-  transition: background-color .2s;
-}
-body.pose {
-  background-color: #96e4a0;
-}
 @keyframes pulse {
   0% {
     opacity: 0.5;
@@ -19,10 +9,31 @@ body.pose {
     opacity: 0.5;
   }
 }
+body {
+  position: relative;
+  text-align: center;
+  background-color: #a1d0dc;
+  margin: 0;
+  transition: background-color .2s;
+}
+body.pose {
+  background-color: #96e4a0;
+}
+body.error {
+  background-color: #e4665e;
+}
+body.pose #statustext,
+body.ready #statustext {
+  animation: pulse 1s infinite;
+  animation-timing-function: cubic-bezier(0.4, 0, 1, 1);
+}
 body.pose #statustext {
   color: #149036;
   text-shadow: 2px 3px 0px #d1ffcf;
-  animation: pulse 1s infinite;
+}
+body.error #statustext {
+  color: #af2323;
+  text-shadow: 2px 3px 0px #ffcfcf;
 }
 video {
   transform: scaleX(-1);

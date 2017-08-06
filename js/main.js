@@ -10,7 +10,7 @@
     num_frames: 10,
     rows: 4,
     gutter: 7,
-    gutter_color: 'white',
+    gutter_color: 'black',
     width: 300,
     height: 900
   },
@@ -18,30 +18,20 @@
     height: 0
   };
 
-  if (navigator && navigator.mediaDevices) {
-    navigator.mediaDevices.getUserMedia({video: {facingMode: 'user'}}).then(function (stream) {
-      video.srcObject = stream;
-      video.play();
-      video.addEventListener('canplay', function () {
-        setTimeout(function () {
-          ready = true;
-        }, config.ramp_time);
-      }, false);
-    });
-  }
-
   function sleep (time) {
     return new Promise(function (resolve) { setTimeout(resolve, time); });
   }
 
-  function setStatus (text) {
+  function setStatus (text, body_class) {
+    body_class = body_class || '';
     statustext.textContent = text;
     console.log(text);
+    document.body.classList = body_class;
   }
 
   function startCapture () {
     if (ready && !running) {
-      setStatus('GET READY');
+      setStatus('GET READY', 'ready');
       preview.parentElement.classList.remove('active');
       running = true;
       var target_height = ((config.height - footer.height) - ((config.rows + 1) * config.gutter)) / config.rows;
@@ -62,8 +52,7 @@
         sleep((6000 * (i + 1)) + (pose_time * i)).then(function () {
           for (let j = 0; j < config.num_frames; ++j) {
             sleep(config.frame_delay * j).then(function () {
-              setStatus('POSE!');
-              document.body.classList.add('pose');
+              setStatus('POSE', 'pose');
               if (!frames[j]) {
                 frames[j] = base_canvas.cloneNode();
                 context = frames[j].getContext('2d');
@@ -77,8 +66,7 @@
               }
               context.drawImage(video, 0, (i * target_height) + ((i + 1) * config.gutter), target_width, target_height);
               if (j === config.num_frames - 1) {
-                setStatus('GET READY');
-                document.body.classList.remove('pose');
+                setStatus('GET READY', 'ready');
               }
               if (i === config.rows - 1 && j === config.num_frames - 1) {
                 gif = new GIF({
@@ -95,10 +83,11 @@
                   }
                   preview.src = URL.createObjectURL(blob);
                   preview.parentElement.classList.add('active');
+                  setStatus('CLICK ME');
                 });
                 gif.render();
                 running = false;
-                setStatus('CLICK ME');
+                setStatus('LOADING GIF');
               }
             });
           }
@@ -114,5 +103,24 @@
       startCapture();
     }
   };
+
+  setStatus('WARMING UP');
+  if (navigator && navigator.mediaDevices) {
+    navigator.mediaDevices.getUserMedia({video: {facingMode: 'user'}}).then(function (stream) {
+      video.srcObject = stream;
+      video.play();
+      video.addEventListener('canplay', function () {
+        setTimeout(function () {
+          ready = true;
+          setStatus('CLICK ME');
+        }, config.ramp_time);
+      }, false);
+    }).catch(function () {
+      setStatus('WEBCAM ERROR 😭', 'error');
+    });
+  }
+  else {
+    setStatus('OLD BROWSER 😭', 'error');
+  }
 
 }());
