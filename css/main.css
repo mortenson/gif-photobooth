@@ -36,8 +36,10 @@ body.error #statustext {
   text-shadow: 2px 3px 0px #ffcfcf;
 }
 video {
-  transform: scaleX(-1);
-  width: 50%;
+  display: none;
+}
+canvas {
+  width: 30%;
 }
 .preview-wrapper {
   display: none;
@@ -78,7 +80,7 @@ video {
   font-size: 75px;
 }
 @media (max-width: 800px) {
-  video {
+  canvas {
     width: 100%;
   }
   #statustext {

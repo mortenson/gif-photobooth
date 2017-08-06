@@ -6,9 +6,9 @@
     ready = false,
     config = {
     ramp_time: 500,
-    frame_delay: 1,
-    num_frames: 1,
-    prep_time: 1,
+    frame_delay: 300,
+    num_frames: 10,
+    prep_time: 6000,
     rows: 4,
     gutter: 7,
     gutter_color: 'black',
@@ -18,6 +18,10 @@
     footer = {
     height: 0
   };
+
+  function getTargetHeight () {
+    return ((config.height - footer.height) - ((config.rows + 1) * config.gutter)) / config.rows;
+  }
 
   function sleep (time) {
     return new Promise(function (resolve) { setTimeout(resolve, time); });
@@ -34,7 +38,7 @@
       setStatus('Get ready...', 'ready');
       preview.parentElement.classList.remove('active');
       running = true;
-      var target_height = ((config.height - footer.height) - ((config.rows + 1) * config.gutter)) / config.rows;
+      var target_height = getTargetHeight();
       var target_width = config.width;
       var pose_time = config.frame_delay * config.num_frames;
       var base_canvas = document.createElement('canvas');
@@ -60,13 +64,11 @@
                 context = frames[j].getContext('2d');
                 context.fillStyle = config.gutter_color;
                 context.fillRect(0, 0, frames[j].width, frames[j].height);
-                context.translate(frames[j].width, 0);
-                context.scale(-1, 1);
               }
               else {
                 context = frames[j].getContext('2d');
               }
-              context.drawImage(video, video.videoWidth - target_width, video.videoHeight - target_height, target_width, target_height, 0, (i * target_height) + ((i + 1) * config.gutter), target_width, target_height);
+              context.drawImage(videomirror, 0, (i * target_height) + ((i + 1) * config.gutter), target_width, target_height);
               if (j === config.num_frames - 1) {
                 setStatus('Get Ready...', 'ready');
               }
@@ -126,7 +128,21 @@
           ready = true;
           setStatus('Click me');
           interval = setInterval(function () {
-          
+            var target_height = getTargetHeight();
+            var target_width = config.width;
+            videomirror.width = target_width;
+            videomirror.height = target_height;
+            var context = videomirror.getContext('2d');
+            context.translate(videomirror.width, 0);
+            context.scale(-1, 1);
+            // Scale and crop the video, if possible.
+            if (video.videoWidth > target_width && video.videoHeight > target_height) {
+              context.drawImage(video, (video.videoWidth - target_width) / 2, (video.videoHeight - target_height) / 2, target_width, target_height, 0, 0, target_width, target_height);
+            }
+            // RIP aspect ratio.
+            else {
+              context.drawImage(video, 0, 0, target_width, target_height);
+            }
           }, config.frame_delay);
         }, config.ramp_time);
       }, false);
