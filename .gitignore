@@ -1,4 +1,4 @@
 .idea
 node_modules
-js/gif.js
+js/*/*
 npm-debug.log

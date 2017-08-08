@@ -3,13 +3,14 @@
   "version": "0.0.1",
   "description": "A web based photobooth that creates animated strips.",
   "scripts": {
-    "build": "rm -rf js/gif.js && cp -r node_modules/gif.js/dist js/gif.js",
+    "build": "rm -rf js/gif.js js/glfx && cp -r node_modules/gif.js/dist js/gif.js && cp -r node_modules/glfx js/glfx",
     "start": "npm run build && ws"
   },
   "author": "Samuel Mortenson",
   "license": "GIT",
   "dependencies": {
     "gif.js": "^0.2.0",
+    "glfx": "0.0.4",
     "local-web-server": "^2.2.3"
   }
 }
