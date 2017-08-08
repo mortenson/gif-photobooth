@@ -14,7 +14,7 @@
       gutter_color: 'black',
       width: 200,
       height: 900,
-      filter: 'none'
+      style: 'none'
     };
 
   for (var name in base_config) {
@@ -26,7 +26,7 @@
   function config (name) {
     if (window['config_' + name] && window['config_' + name].value.length) {
       var value = window['config_' + name].value;
-      if (name === 'gutter_color' || name === 'filter') {
+      if (name === 'gutter_color' || name === 'style') {
         return value;
       }
       else if (parseInt(value)) {
@@ -141,6 +141,7 @@
         if (interval) {
           clearInterval(interval);
         }
+        var canvas = fx.canvas();
         setTimeout(function () {
           ready = true;
           setStatus('Click me');
@@ -150,14 +151,40 @@
             videomirror.width = target_width;
             videomirror.height = target_height;
             var context = videomirror.getContext('2d');
-            context.translate(videomirror.width, 0);
-            context.scale(-1, 1);
+            context.imageSmoothingEnabled = false;
             var ratio  = Math.max(target_width  / video.videoWidth, target_height / video.videoHeight);
             var x = (target_width - video.videoWidth * ratio) / 2;
             var y = (target_height - video.videoHeight * ratio) / 2;
-            context.imageSmoothingEnabled = false;
-            context.filter = config('filter');
-            context.drawImage(video, 0,0, video.videoWidth, video.videoHeight, x, y, video.videoWidth * ratio, video.videoHeight * ratio);
+            context.drawImage(video, 0, 0, video.videoWidth, video.videoHeight, x, y, video.videoWidth * ratio, video.videoHeight * ratio);
+            canvas.draw(canvas.texture(videomirror));
+            var style = config('style');
+            switch (style) {
+              case 'grayscale':
+                canvas.hueSaturation(-1, -1);
+                break;
+              case 'sepia':
+                canvas.sepia(1);
+                break;
+              case 'beauty':
+              case 'purikura':
+                canvas.denoise(80).brightnessContrast(.1, 0);
+                break;
+              case 'vignette':
+                canvas.vignette(0.5, 0.7);
+                break;
+              case 'motionblur':
+                canvas.zoomBlur(videomirror.width / 2, videomirror.height / 2, 0.2);
+                break;
+              default:
+                break;
+            }
+            canvas.update();
+            context.translate(videomirror.width, 0);
+            context.scale(-1, 1);
+            context.drawImage(canvas, 0, 0, videomirror.width, videomirror.height);
+            if (style === 'purikura') {
+              context.drawImage(purikura.children[0], 0, 0, videomirror.width, videomirror.height);
+            }
           }, 10);
         }, config('ramp_time'));
       }, false);

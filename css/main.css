@@ -85,6 +85,9 @@ canvas {
   text-shadow: 2px 3px 0px #cff8ff;
   font-size: 75px;
 }
+#purikura {
+  display: none;
+}
 form {
   display: block;
   text-align: left;

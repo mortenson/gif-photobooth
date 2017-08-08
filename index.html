@@ -3,6 +3,8 @@
     <title>GIF Photobooth</title>
     <link rel="stylesheet" href="css/main.css">
     <script src="js/gif.js/gif.js"></script>
+    <script src="js/glfx/glfx.js"></script>
+    <script src="js/tracking/tracking-min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
   <body>
@@ -17,14 +19,15 @@
       </div>
     </div>
     <form onsubmit="submitConfigForm()">
-      <label for="config_filter">Style</label>
-      <select id="config_filter">
+      <label for="config_style">Style</label>
+      <select id="config_style">
         <option value="none">None</option>
-        <option value="grayscale(100%)">Black & white</option>
-        <option value="sepia(50%)">Sepia-tone</option>
-        <option value="hue-rotate(90deg)">Hue shift 1</option>
-        <option value="hue-rotate(180deg)">Hue shift 2</option>
-        <option value="hue-rotate(270deg)">Hue shift 3</option>
+        <option value="grayscale">Black & white</option>
+        <option value="beauty">Beauty</option>
+        <option value="purikura">Purikura (Japanese photobooth)</option>
+        <option value="sepia">Sepia-tone</option>
+        <option value="vignette">Vignette</option>
+        <option value="motionblur">Motion blur</option>
       </select>
       <label for="config_width">Width</label>
       <input id="config_width" type="text">
@@ -43,6 +46,9 @@
       <label for="config_prep_time">Time between poses (in milliseconds)</label>
       <input id="config_prep_time" type="text">
     </form>
+    <div id="purikura">
+      <img src="images/purikura-1.png" />
+    </div>
     <script src="js/main.js"></script>
   </body>
 </html>
