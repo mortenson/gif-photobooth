@@ -14,7 +14,8 @@
       gutter_color: '#000000',
       width: 200,
       height: 900,
-      style: 'none'
+      style: 'none',
+      auto_download: 0
     };
 
   for (var name in base_config) {
@@ -30,6 +31,9 @@
       var value = input.value;
       if (name === 'gutter_color' || name === 'style') {
         return value;
+      }
+      else if (name === 'auto_download') {
+        return input.checked;
       }
       else if (parseInt(value)) {
         return parseInt(value);
@@ -49,6 +53,7 @@
   function setStatus (text, body_class) {
     var status = document.getElementById('statustext');
     status.textContent = text;
+    status.blur();
     document.body.classList = body_class || '';
   }
 
@@ -105,6 +110,13 @@
       var downloadlink = document.getElementById('downloadlink');
       downloadlink.href = url;
       downloadlink.download = 'photobooth.gif';
+      if (config('auto_download')) {
+        downloadlink.click();
+        downloadlink.style.display = 'none';
+      }
+      else {
+        downloadlink.style.display = 'block';
+      }
       document.getElementById('preview-wrapper').classList.add('active');
       setStatus('Click me');
     });
@@ -151,7 +163,12 @@
 
   document.onkeypress = function (event) {
     if (event.keyCode === 13) {
-      startCapture();
+      if (document.getElementById('preview-wrapper').classList.contains('active')) {
+        document.getElementById('preview-wrapper').classList.remove('active');
+      }
+      else {
+        startCapture();
+      }
     }
   };
 
