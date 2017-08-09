@@ -47,7 +47,7 @@ video {
 canvas {
   width: 30%;
 }
-.preview-wrapper {
+#preview-wrapper {
   display: none;
   position: fixed;
   top: 0;
@@ -57,7 +57,7 @@ canvas {
   padding-top: 50px;
   background: rgba(0, 0, 0, 0.70);
 }
-.preview-wrapper.active {
+#preview-wrapper.active {
   display: block;
 }
 .links a {
@@ -106,11 +106,16 @@ select {
   padding: 5px;
   font-size: 15px;
 }
-label {
+label, form p {
   display: block;
   margin-bottom: 5px;
   color: #147d90;
   text-shadow: 1px 1px 0px #cff8ff;
+}
+form p {
+  font-size: 14px;
+  margin-bottom: 25px;
+  margin-top: -10px;
 }
 @media (max-width: 800px) {
   canvas {

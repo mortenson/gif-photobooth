@@ -10,7 +10,7 @@
     <a href="#" id="statustext">Warming up</a>
     <video autoplay="autoplay" id="video"></video>
     <canvas id="videomirror"></canvas>
-    <div class="preview-wrapper">
+    <div id="preview-wrapper">
       <img id="preview" />
       <div class="links">
         <a href="#" id="closelink">close</a>
@@ -28,20 +28,27 @@
         <option value="vignette">Vignette</option>
         <option value="motionblur">Motion blur</option>
       </select>
-      <label for="config_width">Width</label>
+      <label for="config_width">Photo strip width</label>
       <input id="config_width" type="text">
-      <label for="config_height">Height</label>
+      <label for="config_height">Photo strip height</label>
       <input id="config_height" type="text">
+      <p>The size of the preview frame above is calculated by taking the total strip height divided by the number of
+        poses, minus any gutter size. The total size is important for sharing and printing, choose wisely.</p>
       <label for="config_rows">Number of poses</label>
       <input id="config_rows" type="text">
+      <p>Warning: Facebook kinda hates GIFs so you're best off doing one or two poses. Twitter works great for every
+        aspect ratio!</p>
       <label for="config_gutter_color">Gutter color</label>
       <input id="config_gutter_color" type="color">
       <label for="config_gutter">Gutter height (in pixels)</label>
       <input id="config_gutter" type="text">
+      <p>The gutter is the space in between photos in the strip.</p>
       <label for="config_num_frames">Number of GIF frames</label>
       <input id="config_num_frames" type="text">
       <label for="config_frame_delay">Time between frames (in milliseconds)</label>
       <input id="config_frame_delay" type="text">
+      <p>The length of the GIF is determined by the number of frames multiplied by the time between frames. Many frames
+        with a short time between them will feel smoother, but the filesize will get out of hand. Find a balance!</p>
       <label for="config_prep_time">Time between poses (in milliseconds)</label>
       <input id="config_prep_time" type="text">
     </form>
